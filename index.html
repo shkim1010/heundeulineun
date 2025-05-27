@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>내 향수를 만들어줘</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6T3AYJDbRVhjL4cfZ5S4DylcCZhvrLsA",
+      authDomain: "heundeulinen-ggotdeul.firebaseapp.com",
+      projectId: "heundeulinen-ggotdeul",
+      storageBucket: "heundeulinen-ggotdeul.appspot.com",
+      messagingSenderId: "618221904064",
+      appId: "1:618221904064:web:630f69acc6757254388d25"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    window.db = getFirestore(app);
+  </script>
+</head>
+<body>
+  <div id="lock-screen">
+    <div class="clock">19:51</div>
+    <div class="date">7월 18일 금요일</div>
+
+    <!-- 음악 재생 위젯 -->
+    <div id="music-widget">
+      <div class="title">iPhone</div>
+      <div class="track">혼들리는 꽃들 속에서 네 샴푸 향이 느껴진 거야</div>
+      <div class="artist">장범준</div>
+      <div class="controls">
+        <button>⏮</button>
+        <button>⏸</button>
+        <button>⏭</button>
+      </div>
+    </div>
+
+    <div class="swipe-hint">⬆️ 위로 밀어서 시작</div>
+  </div>
+
+  <div id="chat-screen">
+    <h1>내 향수를 만들어줘</h1>
+    <div id="chat-window"></div>
+    <form id="chat-form">
+      <input type="text" id="user-input" placeholder="좋아하는 음악을 말해주세요" />
+      <button type="submit">전송</button>
+    </form>
+  </div>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
