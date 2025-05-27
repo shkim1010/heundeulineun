@@ -1,0 +1,189 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Apple SD Gothic Neo", sans-serif;
+  background-color: black;
+}
+
+#lock-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("iphone-16-wallpaper-03.jpg") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  color: white;
+  padding-top: 100px;
+  z-index: 2;
+  transition: transform 0.6s ease-in-out;
+}
+
+.clock {
+  font-size: 60px;
+  font-weight: 300;
+  letter-spacing: -1px;
+}
+
+.date {
+  font-size: 16px;
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+#music-widget {
+  margin-top: 40px;
+  width: 90%;
+  max-width: 340px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  padding: 14px 16px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+#music-widget .title {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+#music-widget .track {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+#music-widget .artist {
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+#music-widget .controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#music-widget .controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  opacity: 0.8;
+  cursor: default;
+}
+
+.swipe-hint {
+  margin-top: auto;
+  padding-bottom: 40px;
+  font-size: 17px;
+  animation: hintMove 1.8s infinite ease-in-out;
+}
+
+@keyframes hintMove {
+  0% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-8px); opacity: 0.6; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+#chat-screen {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f2f2f7;
+  z-index: 1;
+  transition: transform 0.6s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 16px;
+}
+
+.slide-up #lock-screen {
+  transform: translateY(-100%);
+}
+
+.slide-up #chat-screen {
+  transform: translateY(-100%);
+}
+
+#chat-window {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 16px;
+}
+
+.bubble {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-size: 15px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+.bubble.user {
+  align-self: flex-end;
+  background-color: #007aff;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+.bubble.bot {
+  align-self: flex-start;
+  background-color: white;
+  color: black;
+  border-bottom-left-radius: 4px;
+  border: 1px solid #d1d1d6;
+}
+
+#chat-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+#user-input {
+  flex-grow: 1;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: white;
+}
+
+button[type="submit"] {
+  padding: 10px 16px;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+  background-color: #005fcc;
+}
