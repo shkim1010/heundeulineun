@@ -1,70 +1,53 @@
+// script.js
+
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const body = document.body;
-const lockScreen = document.getElementById("lock-screen");
 const chatForm = document.getElementById("chat-form");
 const chatWindow = document.getElementById("chat-window");
 const userInput = document.getElementById("user-input");
 
-let startY = 0;
-let isSliding = false;
+// Firestore 인스턴스 (index.html에서 window.db로 연결해뒀음)
+const db = window.db;
 
-lockScreen.addEventListener("touchstart", e => startY = e.touches[0].clientY);
-lockScreen.addEventListener("touchmove", e => {
-  const moveY = e.touches[0].clientY;
-  if (startY - moveY > 100 && !isSliding) {
-    body.classList.add("slide-up");
-    isSliding = true;
-  }
-});
-
-let mouseDownY = 0, isMouseDown = false;
-lockScreen.addEventListener("mousedown", e => {
-  isMouseDown = true;
-  mouseDownY = e.clientY;
-});
-document.addEventListener("mousemove", e => {
-  if (!isMouseDown || isSliding) return;
-  if (mouseDownY - e.clientY > 100) {
-    body.classList.add("slide-up");
-    isSliding = true;
-  }
-});
-document.addEventListener("mouseup", () => isMouseDown = false);
-
-function addBubble(text, sender) {
-  const bubble = document.createElement("div");
-  bubble.className = "bubble " + sender;
-  bubble.textContent = text;
-  chatWindow.appendChild(bubble);
-  chatWindow.scrollTop = chatWindow.scrollHeight;
-}
-
+// 사용자 메시지 입력 이벤트 처리
 chatForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const music = userInput.value.trim();
-  if (!music) return;
 
-  addBubble(music, "user");
+  const message = userInput.value.trim();
+  if (!message) return;
+
+  // 사용자 메시지 화면에 출력
+  const userMsg = document.createElement("div");
+  userMsg.className = "user-msg";
+  userMsg.innerText = message;
+  chatWindow.appendChild(userMsg);
+
   userInput.value = "";
 
+  // Firestore에 저장
+  try {
+    await addDoc(collection(db, "messages"), {
+      text: message,
+      timestamp: new Date()
+    });
+  } catch (error) {
+    console.error("Firestore 저장 실패:", error);
+  }
+
+  // 향수 추천 API 호출 예시
   try {
     const res = await fetch("/api/recommend", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ song: music })
+      body: JSON.stringify({ song: message })
     });
-    const { top, middle, base } = await res.json();
+    const data = await res.json();
 
-    const resultText = `추천 향입니다:\n탑 노트: ${top}\n미들 노트: ${middle}\n베이스 노트: ${base}`;
-    addBubble(resultText, "bot");
-
-    await addDoc(collection(window.db, "recommendations"), {
-      song: music, top, middle, base, timestamp: Date.now()
-    });
-
+    const botMsg = document.createElement("div");
+    botMsg.className = "bot-msg";
+    botMsg.innerText = `추천 향수: ${data.result}`;
+    chatWindow.appendChild(botMsg);
   } catch (err) {
-    console.error(err);
-    addBubble("추천에 실패했어요. 다시 시도해주세요.", "bot");
+    console.error("추천 실패:", err);
   }
 });
